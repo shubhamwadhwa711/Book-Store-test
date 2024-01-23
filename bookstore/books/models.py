@@ -24,6 +24,7 @@ class Book(models.Model):
     publish_year = models.IntegerField(_("Publish Year"))
     author = models.ForeignKey("books.Author", on_delete=models.CASCADE)
     barcode = models.CharField(_("Barcode"), max_length=100, null=True, blank=True)
+    available_quantity = models.PositiveIntegerField(_("Available Quantity"), default=0)
     
 
     class Meta:
@@ -36,16 +37,12 @@ class Book(models.Model):
     def get_absolute_url(self):
         return reverse("book-detail", kwargs={"pk": self.pk})
 
-    @property
-    def quantity(self):
-        total_quantity = self.storinginformation_set.all().aggregate(Sum('quantity'))
-        return total_quantity['quantity__sum']
-
 
 class StoringInformation(models.Model):
-
+    ACTION_CHOICES = (("+", "Add"),("-", "Remove"))
     book = models.ForeignKey("books.Book", on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(_("Quantity"))
+    action = models.CharField(_("Action"), choices=ACTION_CHOICES, max_length=10)
     created_at = models.DateTimeField(_("Created At"), auto_now_add=True)
 
     class Meta:
