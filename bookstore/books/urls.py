@@ -14,5 +14,6 @@ urlpatterns = [
     path("history/<int:id>/", views.HistoryView.as_view(), name="history"),
     path('leftover/add/', views.AddLeftOversAPIView.as_view(), name="left_over_add"),
     # path('leftover/bulk/', views.StoringInformationViewSet, basename="StoringInformation"),
-    path('leftover/remove/', views.RemoveLeftOversAPIView.as_view(), name="left_over_remove")
+    path('leftover/remove/', views.RemoveLeftOversAPIView.as_view(), name="left_over_remove"),
+    path('bulkimport/',views.BulkImportView.as_view(),name="bulkimport"),    
 ]

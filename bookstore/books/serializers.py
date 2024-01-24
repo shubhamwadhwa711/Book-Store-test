@@ -19,7 +19,7 @@ class BookSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     def validate_publish_year(self, value):
-        if value <= 1990:
+        if value <= 1900:
             raise serializers.ValidationError("Publish Year Must Be Grater than 1900")
         return value
 
@@ -90,3 +90,6 @@ class HistoryReadSerializer(serializers.ModelSerializer):
         elif end_date and not start_date:
             qs.filter(created_at__lte=end_date)
         return HistorySerializer(qs, many=True).data
+    
+class BulkImportSerializer(serializers.Serializer):
+    upload_file = serializers.FileField(required = True)
